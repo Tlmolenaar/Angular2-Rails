@@ -4,5 +4,5 @@
 </div>
 
 <div *ngFor="let proposal of proposals">
-	{{proposal.customer}}
+<a routerLink="/proposal/{{proposal.id}}">{{proposal.id}} - {{proposal.customer}} </a>
 </div>
