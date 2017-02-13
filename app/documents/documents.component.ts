@@ -1,36 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Document } from './document';
+import { DocumentService} from './document.service';
+import { Observable} from 'rxjs/Rx';
+
 
 @Component({
 	moduleId: module.id,
 	selector: 'documents',
 	templateUrl: 'documents.component.html',
-	styleUrls: ['document.component.css']
+	styleUrls: ['document.component.css'],
+	providers: [ DocumentService]
 })
 
 export class DocumentsComponent{
-	documents: Document[] = [
-	{
-		title: "My First Doc",
-	description: "dsgsfgfdgd",
-	file_url: "weqfgffdssfg",
-	updated_at: "today",
-	image_url: "http://www.businessnewsdaily.com/images/i/000/006/605/original/freelance-tech-tools.jpg?1407957472",
-	},
-	{
-		title: "poep",
-	description: "poep",
-	file_url: "poep",
-	updated_at: "poep",
-	image_url: "http://www.businessnewsdaily.com/images/i/000/006/605/original/freelance-tech-tools.jpg?1407957472",
-	},
-	{
-		title: "My last doc",
-	description: "hoi",
-	file_url: "gdfgdd",
-	updated_at: "fdsggfd",
-	image_url: "http://www.businessnewsdaily.com/images/i/000/006/605/original/freelance-tech-tools.jpg?1407957472",
+	documents: Document[];
+	mode = "Observable";
+
+	constructor(
+		private documentService: DocumentService;
+		) {}
+
+	ngOnInit(){
+		let timer = Observable.timer(0,5000);
+		timer.subscribe(()=> this.getDocuments());
 	}
-	]
-	
+
+	getDocuments() {
+		this.documentService.getDocuments()
+			.subscribe(
+				documents => this.documents = documents,
+				error => this.errorMessage = <any>error
+				);
+	}
 }

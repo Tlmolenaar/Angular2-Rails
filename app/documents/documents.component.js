@@ -9,40 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var document_service_1 = require('./document.service');
+var Rx_1 = require('rxjs/Rx');
 var DocumentsComponent = (function () {
-    function DocumentsComponent() {
-        this.documents = [
-            {
-                title: "My First Doc",
-                description: "dsgsfgfdgd",
-                file_url: "weqfgffdssfg",
-                updated_at: "today",
-                image_url: "http://www.businessnewsdaily.com/images/i/000/006/605/original/freelance-tech-tools.jpg?1407957472",
-            },
-            {
-                title: "poep",
-                description: "poep",
-                file_url: "poep",
-                updated_at: "poep",
-                image_url: "http://www.businessnewsdaily.com/images/i/000/006/605/original/freelance-tech-tools.jpg?1407957472",
-            },
-            {
-                title: "My last doc",
-                description: "hoi",
-                file_url: "gdfgdd",
-                updated_at: "fdsggfd",
-                image_url: "http://www.businessnewsdaily.com/images/i/000/006/605/original/freelance-tech-tools.jpg?1407957472",
-            }
-        ];
+    function DocumentsComponent(documentService) {
+        this.documentService = documentService;
+        this.mode = "Observable";
     }
+    DocumentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var timer = Rx_1.Observable.timer(0, 5000);
+        timer.subscribe(function () { return _this.getDocuments(); });
+    };
+    DocumentsComponent.prototype.getDocuments = function () {
+        var _this = this;
+        this.documentService.getDocuments()
+            .subscribe(function (documents) { return _this.documents = documents; }, function (error) { return _this.errorMessage = error; });
+    };
     DocumentsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'documents',
             templateUrl: 'documents.component.html',
-            styleUrls: ['document.component.css']
+            styleUrls: ['document.component.css'],
+            providers: [document_service_1.DocumentService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [document_service_1.DocumentService])
     ], DocumentsComponent);
     return DocumentsComponent;
 }());
